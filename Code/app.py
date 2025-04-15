@@ -31,11 +31,11 @@ with col1:
 with col2:
     st.image(image, use_container_width=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(['Youtube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
+tab1, tab2, tab3, tab4 = st.tabs(['YouTube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
 
 with tab1:
-    st.markdown('### Youtube Stats')
-    st.markdown("#### Youtube engagement is an important way to gauge ad reach.")
+    st.markdown('### YouTube Stats')
+    st.markdown("#### YouTube engagement is an important way to gauge ad reach.")
 
     # what were the top X most viewed superbowl ads on youtube?
 
@@ -104,10 +104,10 @@ with tab1:
         ))
     ])
 
-    fig.update_layout(title='Youtube Engagement Table')
+    fig.update_layout(title='YouTube Engagement Table')
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(
-    "<p style='font-size: 12px; color: gray;'>Data from Youtube, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
+    "<p style='font-size: 12px; color: gray;'>Data from YouTube, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
     unsafe_allow_html=True
 )
     
