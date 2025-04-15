@@ -218,7 +218,7 @@ with tab4:
 
     fig = px.pie(celebrity_counts, names=celebrity_counts.index, values=celebrity_counts.values, 
                 title='Ads with Celebrities vs. Without Celebrities',
-                color_discrete_sequence=['#cc0000','#ff9999'])
+                color_discrete_sequence=['#ffcb8e','#ff9999'])
 
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(
