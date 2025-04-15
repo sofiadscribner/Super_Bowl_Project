@@ -16,19 +16,15 @@ url = 'https://raw.githubusercontent.com/sofiadscribner/Super_Bowl_Project/main/
 
 df = pd.read_csv(url)
 
-# initiate streamlit app with title
+# initiate streamlit app with title and image
 
 img_url = 'https://raw.githubusercontent.com/sofiadscribner/Super_Bowl_Project/main/Code/logo.png'
 response = requests.get(img_url)
 image = Image.open(BytesIO(response.content))
-
-# Create two columns
 col1, col2 = st.columns([5, 3])
 
 with col1:
-    st.markdown("## Super Bowl 2024 Ads: " \
-    
-    "An Exploration")
+    st.markdown("## Super Bowl 2024 Ads: An Exploration")
 
 with col2:
     st.image(image, use_container_width=True)
@@ -39,18 +35,18 @@ with tab1:
     st.markdown('### YouTube Stats')
     st.markdown("#### YouTube engagement is an important way to gauge ad reach.")
 
-    # what were the top X most viewed superbowl ads on youtube?
+# what were the top X most viewed superbowl ads on youtube?
 
     bars_df = df
 
     bars_df['ad_label'] = bars_df['Title'] + ' - ' + bars_df['Advertiser/product']
 
-    # select the top X most viewed Super Bowl ads
+# select the top X most viewed Super Bowl ads
 
     x_ads = st.select_slider('Number of Ads to Display', options=list(range(1, 16)), value=5)
     top_ads = bars_df.nlargest(x_ads, 'Views').sort_values(by='Views', ascending=True)
 
-    # create a bar chart
+# create a bar chart
 
     fig = px.bar(
         top_ads, 
@@ -67,13 +63,13 @@ with tab1:
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # create table for youtube engagement stats
+# create table for youtube engagement stats
 
     df_table = df[['Advertiser/product', 'Likes', 'Views']].copy().dropna()
     df_table['like_to_view_ratio'] = (df_table['Likes'] / df_table['Views']) * 100
     df_table['like_to_view_ratio'] = df_table['like_to_view_ratio'].round(2)
 
-    # allow user to choose how table is sorted
+# allow user to choose how table is sorted
 
     selection = st.selectbox('Sort by:', ['Likes', 'Views', 'Like-to-View-Ratio'])
 
@@ -120,14 +116,13 @@ with tab2:
     st.markdown("#### About 1/5 of the brands experienced their 5-year peak Google search popularity on the week of their Super Bowl Ad.") 
     brands = df['Advertiser/product'].unique()
 
-    # allow user to select a brand
+# allow user to select a brand
 
     selection = st.selectbox('Select a brand.', sorted(brands), index = 8)
     row = df[df['Advertiser/product'] == selection]
+    peaked = row['Peaked'].values[0]
 
-    # Check the 'Peaked on Google' value (should be boolean)
-    peaked = row['Peaked'].values[0]  # assumes one row per brand
-
+# display whether the brand peaked
 
     st.markdown(f"#### Did {selection} peak?")
     if peaked:
@@ -201,8 +196,6 @@ with tab4:
     st.markdown('### Celebrity Influence')
     st.markdown("#### Some of the most successful ads, by polling data and by search popularity, included celebrities.")
 
-    # show what percentage included celebrities
-
     # allow user to toggle between YouGov top 10, ads that peaked in google search popularity, and all ads
 
     toggle = st.segmented_control('Select a group of ads.', ['YouGov Top 10', 'Peaked on Google', 'All'])
@@ -213,7 +206,8 @@ with tab4:
     else:
         filtered_df = df.copy()
 
-    # Count how many included celebrities
+    # show how many included celebrities
+
     celebrity_counts = filtered_df['Celebrity'].value_counts(dropna=False)
 
     celebrity_counts.index = celebrity_counts.index.map({True: 'Included Celebrity', False: 'No Celebrity'})
