@@ -18,9 +18,12 @@ df = pd.read_csv(url)
 
 st.title('Super Bowl 2024 Ads: An Exploration')
 
-tab1, tab2, tab3 = st.tabs(['Youtube Stats', 'Polling Data', 'Celebrity Influence'])
+tab1, tab2, tab3, tab4 = st.tabs(['Youtube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
 
 with tab1:
+    st.markdown('### Youtube Stats')
+    st.markdown("#### Youtube engagement is an important way to gauge ad reach.")
+
     # what were the top X most viewed superbowl ads on youtube?
 
     bars_df = df
@@ -29,7 +32,7 @@ with tab1:
 
     # select the top X most viewed Super Bowl ads
 
-    x_ads = st.select_slider('Number of Ads to Display', options=list(range(1, 16)), value=3)
+    x_ads = st.select_slider('Number of Ads to Display', options=list(range(1, 16)), value=5)
     top_ads = bars_df.nlargest(x_ads, 'Views').sort_values(by='Views', ascending=True)
 
     # create a bar chart
@@ -49,7 +52,85 @@ with tab1:
 
     st.plotly_chart(fig, use_container_width=True)
 
+    # create table for youtube engagement stats
+
+    df_table = df[['Advertiser/product', 'Likes', 'Views']].copy().dropna()
+    df_table['like_to_view_ratio'] = (df_table['Likes'] / df_table['Views']) * 100
+    df_table['like_to_view_ratio'] = df_table['like_to_view_ratio'].round(2)
+
+    # allow user to choose how table is sorted
+
+    selection = st.selectbox('Sort by:', ['Likes', 'Views', 'Like-to-View-Ratio'])
+
+    if selection == 'Likes':
+        sort_by = 'Likes'
+    elif selection == 'Views':
+        sort_by = 'Views'
+    elif selection == 'Like-to-View-Ratio':
+        sort_by = 'like_to_view_ratio'
+
+    df_table = df_table.sort_values(by= sort_by, ascending=False)
+
+    fig = go.Figure(data=[go.Table(
+        header=dict(
+            values=["Brand", "Likes", "Views", "Like-to-View Ratio (%)"],
+            fill_color='red',
+            align='center',
+            font=dict(color='white', size=14)
+        ),
+        cells=dict(
+            values=[
+                df_table['Advertiser/product'],
+                df_table['Likes'],
+                df_table['Views'],
+                df_table['like_to_view_ratio']
+            ],
+            fill_color='white',
+            align='center',
+            font=dict(size=12)
+        ))
+    ])
+
+    fig.update_layout(title='Youtube Engagement Table')
+    st.plotly_chart(fig, use_container_width=True)
+    st.markdown(
+    "<p style='font-size: 12px; color: gray;'>Data from Youtube, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
+    unsafe_allow_html=True
+)
+    
+# explore google trends data
+
 with tab2:
+    st.markdown('### Google Trends')
+    st.markdown("#### About 1/5 of the brands experienced their 5-year peak Google search popularity on the week of their Super Bowl Ad.") 
+    brands = df['Advertiser/product'].unique()
+
+    # allow user to select a brand
+
+    selection = st.selectbox('Select a brand.', sorted(brands), index = 8)
+    row = df[df['Advertiser/product'] == selection]
+
+    # Check the 'Peaked on Google' value (should be boolean)
+    peaked = row['Peaked'].values[0]  # assumes one row per brand
+
+
+    st.markdown(f"#### Did {selection} peak?")
+    if peaked:
+        st.markdown("<h3 style= 'font-size: 18px; color: green;'>✅ Yes! That brand exerienced their 5-year peak.</h3>", unsafe_allow_html=True)
+    else:
+        relative_search_popularity = row['Relative_Search_Popularity'].values[0]
+        st.markdown(f"<h3 style= 'font-size: 18px; color: red;'>❌ No, but they hit {relative_search_popularity}% of their highest popularity.</h3>", unsafe_allow_html=True)
+        
+    st.markdown(
+        "<p style='font-size: 12px; color: gray;'>Data from Google Trends, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
+        unsafe_allow_html=True)
+
+# create lollipop chart showing marketing metrics 
+
+with tab3:
+    st.markdown('### Polling Data')
+    st.markdown("#### Marketing polls help determine the immediate effect of the ads on consumer sentiment.")
+
     input = st.radio('Select a marketing metric.', ['Brand Awareness','Brand Familiarity',  'Brand Momentum', 'Consideration of Purchasing','Perception of Quality'])
     metric_map = {
             'Brand Awareness': 'awareness_increase',
@@ -59,6 +140,8 @@ with tab2:
             'Perception of Quality': 'quality_increase'
         }
     
+    # allow user to select which metric to view
+
     stat_of_interest = metric_map[input]
 
     # Filter data
@@ -94,42 +177,37 @@ with tab2:
         )
 
         st.plotly_chart(fig, use_container_width=True)
+        st.markdown(
+            "<p style='font-size: 12px; color: gray;'>Data from The Harris Poll, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
+            unsafe_allow_html=True)
+        
+with tab4:
 
-with tab3:
-    df_table = df[['Advertiser/product', 'Likes', 'Views']].copy().dropna()
-    df_table['like_to_view_ratio'] = (df_table['Likes'] / df_table['Views']) * 100
-    df_table['like_to_view_ratio'] = df_table['like_to_view_ratio'].round(2)
+    st.markdown('### Celebrity Influence')
+    st.markdown("#### Some of the most successful ads, by polling data and by search popularity, included celebrities.")
 
-    selection = st.selectbox('Sort by:', ['Likes', 'Views', 'Like-to-View-Ratio'])
+    # show what percentage included celebrities
 
-    if selection == 'Likes':
-        sort_by = 'Likes'
-    elif selection == 'Views':
-        sort_by = 'Views'
-     elif selection == 'Likes':
-        sort_by = 'like_to_view_ratio'
+    # allow user to toggle between YouGov top 10, ads that peaked in google search popularity, and all ads
 
-    df_table = df_table.sort_values(by= sort_by, ascending=False)
+    toggle = st.segmented_control('Select a group of ads.', ['YouGov Top 10', 'Peaked on Google', 'All'])
+    if toggle == 'YouGov Top 10':
+        filtered_df = df[df['yougov_ranking'] > 0]
+    elif toggle == 'Peaked on Google':
+        filtered_df = df[df['Peaked'] == True]
+    else:
+        filtered_df = df.copy()
 
-    fig = go.Figure(data=[go.Table(
-        header=dict(
-            values=["Brand", "Likes", "Views", "Like-to-View Ratio (%)"],
-            fill_color='red',
-            align='center',
-            font=dict(color='white', size=14)
-        ),
-        cells=dict(
-            values=[
-                df_table['Advertiser/product'],
-                df_table['Likes'],
-                df_table['Views'],
-                df_table['like_to_view_ratio']
-            ],
-            fill_color='white',
-            align='center',
-            font=dict(size=12)
-        ))
-    ])
+    # Count how many included celebrities
+    celebrity_counts = filtered_df['Celebrity'].value_counts(dropna=False)
 
-    fig.update_layout(title='Youtube Engagement Table')
+    celebrity_counts.index = celebrity_counts.index.map({True: 'Included Celebrity', False: 'No Celebrity'})
+
+    fig = px.pie(celebrity_counts, names=celebrity_counts.index, values=celebrity_counts.values, 
+                title='Ads with Celebrities vs. Without Celebrities',
+                color_discrete_sequence=['#cc0000','#ff9999'])
+
     st.plotly_chart(fig, use_container_width=True)
+    st.markdown(
+            "<p style='font-size: 12px; color: gray;'>Data from personal observation and Google Trends, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
+            unsafe_allow_html=True)
