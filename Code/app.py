@@ -6,7 +6,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import kaleido
 import streamlit as st
+from io import BytesIO
 from PIL import Image
+import requests
 
 # read in data from github repo
 
@@ -16,18 +18,18 @@ df = pd.read_csv(url)
 
 # initiate streamlit app with title
 
-img_url = 
-
-image = Image.open("logo.png")
+img_url = 'https://raw.githubusercontent.com/sofiadscribner/Super_Bowl_Project/main/Code/logo.png'
+response = requests.get(img_url)
+image = Image.open(BytesIO(response.content))
 
 # Create two columns
 col1, col2 = st.columns([5, 1])
 
 with col1:
-    st.markdown("## My Awesome App Title")
+    st.markdown("## Super Bowl 2024 Ads: An Exploration")
 
 with col2:
-    st.image(image, use_column_width=True)
+    st.image(image, use_container_width=True)
 
 tab1, tab2, tab3, tab4 = st.tabs(['Youtube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
 
