@@ -23,7 +23,7 @@ response = requests.get(img_url)
 image = Image.open(BytesIO(response.content))
 
 # Create two columns
-col1, col2 = st.columns([5, 1])
+col1, col2 = st.columns([5, 3])
 
 with col1:
     st.markdown("## Super Bowl 2024 Ads: An Exploration")
