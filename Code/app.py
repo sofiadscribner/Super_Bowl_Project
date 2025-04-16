@@ -36,9 +36,14 @@ with col1:
 with col2:
     st.image(image, use_container_width=True)
 
-tab1, tab2, tab3, tab4 = st.tabs(['YouTube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction','YouTube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
 
 with tab1:
+    st.markdown('### Introduction')
+    st.markdown('#### Brands spent an estimated $650 million on Super Bowl ads in 2024. Was it worth it?')
+    st.markdown('##### Use this app to explore the reach and impact of each ad, and determine which brands won the Big Game.')
+    
+with tab2:
     st.markdown('### YouTube Stats')
     st.markdown("#### YouTube engagement is an important way to gauge ad reach.")
 
@@ -118,7 +123,7 @@ with tab1:
     
 # explore google trends data
 
-with tab2:
+with tab3:
     st.markdown('### Google Trends')
     st.markdown("#### About 1/5 of the brands experienced their 5-year peak Google search popularity on the week of their Super Bowl Ad.") 
     brands = df['Advertiser/product'].unique()
@@ -144,7 +149,7 @@ with tab2:
 
 # create lollipop chart showing marketing metrics 
 
-with tab3:
+with tab4:
     st.markdown('### Polling Data')
     st.markdown("#### Marketing polls help determine the immediate effect of the ads on consumer sentiment.")
 
@@ -198,7 +203,7 @@ with tab3:
             "<p style='font-size: 12px; color: gray;'>Data from The Harris Poll, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
             unsafe_allow_html=True)
         
-with tab4:
+with tab5:
 
     st.markdown('### Celebrity Influence')
     st.markdown("#### Some of the most successful ads, by polling data and by search popularity, included celebrities.")
