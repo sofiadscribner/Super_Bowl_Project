@@ -41,7 +41,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction','YouTube Stats', 'Google 
 with tab1:
     st.markdown('### Introduction')
     st.markdown('#### Brands spent an estimated $650 million on Super Bowl ads in 2024. Was it worth it?')
-    st.markdown('##### Use this app to explore the reach and impact of each ad, and determine which brands won the Big Game.')
+    st.markdown('##### Use this app to explore the reach and impact of each ad, and determine which brands really won the Big Game.')
 
 with tab2:
     st.markdown('### YouTube Stats')
