@@ -24,7 +24,7 @@ image = Image.open(BytesIO(response.content))
 col1, col2 = st.columns([5, 3])
 
 with col1:
-    st.markdown(
+    st.write(
         """
         <h2 style='text-align: center;'>
             Super Bowl 2024 Ads:<br>A Data-Driven Exploration
@@ -39,13 +39,13 @@ with col2:
 tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction','YouTube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
 
 with tab1:
-    st.markdown('### Introduction')
-    st.markdown('#### Brands spent an estimated $650 million on Super Bowl ads in 2024. Was it worth it?')
-    st.markdown('##### Use this app to explore the reach and impact of each ad, and determine which brands really won the Big Game.')
+    st.write('### Introduction')
+    st.write('#### Brands spent an estimated $650 million on Super Bowl ads in 2024. Was it worth it?')
+    st.write('##### Use this app to explore the reach and impact of each ad, and determine which brands really won the Big Game.')
 
 with tab2:
-    st.markdown('### YouTube Stats')
-    st.markdown("#### YouTube engagement is an important way to gauge ad reach.")
+    st.write('### YouTube Stats')
+    st.write("#### YouTube engagement is an important way to gauge ad reach.")
 
 # what were the top X most viewed superbowl ads on youtube?
 
@@ -93,6 +93,8 @@ with tab2:
         sort_by = 'like_to_view_ratio'
 
     df_table = df_table.sort_values(by= sort_by, ascending=False)
+    
+    st.write('##### Youtube Engagement Table')
 
     fig = go.Figure(data=[go.Table(
         header=dict(
@@ -114,9 +116,8 @@ with tab2:
         ))
     ])
 
-    fig.update_layout(title='YouTube Engagement Table')
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown(
+    st.write(
     "<p style='font-size: 12px; color: gray;'>Data from YouTube, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
     unsafe_allow_html=True
 )
@@ -124,8 +125,8 @@ with tab2:
 # explore google trends data
 
 with tab3:
-    st.markdown('### Google Trends')
-    st.markdown("#### About 1/5 of the brands experienced their 5-year peak Google search popularity on the week of their Super Bowl Ad.") 
+    st.write('### Google Trends')
+    st.write("#### About 1/5 of the brands experienced their 5-year peak Google search popularity on the week of their Super Bowl Ad.") 
     brands = df['Advertiser/product'].unique()
 
 # allow user to select a brand
@@ -136,22 +137,22 @@ with tab3:
 
 # display whether the brand peaked
 
-    st.markdown(f"#### Did {selection} peak?")
+    st.write(f"#### Did {selection} peak?")
     if peaked:
-        st.markdown("<h3 style= 'font-size: 18px; color: green;'>✅ Yes! That brand exerienced their 5-year peak.</h3>", unsafe_allow_html=True)
+        st.write("<h3 style= 'font-size: 18px; color: green;'>✅ Yes! That brand exerienced their 5-year peak.</h3>", unsafe_allow_html=True)
     else:
         relative_search_popularity = row['Relative_Search_Popularity'].values[0]
-        st.markdown(f"<h3 style= 'font-size: 18px; color: red;'>❌ No, but they hit {relative_search_popularity}% of their highest popularity.</h3>", unsafe_allow_html=True)
+        st.write(f"<h3 style= 'font-size: 18px; color: red;'>❌ No, but they hit {relative_search_popularity}% of their highest popularity.</h3>", unsafe_allow_html=True)
         
-    st.markdown(
+    st.write(
         "<p style='font-size: 12px; color: gray;'>Data from Google Trends, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
         unsafe_allow_html=True)
 
 # create lollipop chart showing marketing metrics 
 
 with tab4:
-    st.markdown('### Polling Data')
-    st.markdown("#### Marketing polls help determine the immediate effect of the ads on consumer sentiment.")
+    st.write('### Polling Data')
+    st.write("#### Marketing polls help determine the immediate effect of the ads on consumer sentiment.")
 
     input = st.radio('Select a marketing metric.', ['Brand Awareness','Brand Familiarity',  'Brand Momentum', 'Consideration of Purchasing','Perception of Quality'])
     metric_map = {
@@ -199,14 +200,14 @@ with tab4:
         )
 
         st.plotly_chart(fig, use_container_width=True)
-        st.markdown(
+        st.write(
             "<p style='font-size: 12px; color: gray;'>Data from The Harris Poll, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
             unsafe_allow_html=True)
         
 with tab5:
 
-    st.markdown('### Celebrity Influence')
-    st.markdown("#### Some of the most successful ads, by polling data and by search popularity, included celebrities.")
+    st.write('### Celebrity Influence')
+    st.write("#### Some of the most successful ads, by polling data and by search popularity, included celebrities.")
 
     # allow user to toggle between YouGov top 10, ads that peaked in google search popularity, and all ads
 
@@ -229,6 +230,6 @@ with tab5:
                 color_discrete_sequence=['#cc0000','#ffcb8e'])
 
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown(
+    st.write(
             "<p style='font-size: 12px; color: gray;'>Data from personal observation and Google Trends, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
             unsafe_allow_html=True)
