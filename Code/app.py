@@ -27,7 +27,7 @@ with col1:
     st.markdown(
         """
         <h2 style='text-align: center;'>
-            Super Bowl 2024 Ads:<br>An Exploration
+            Super Bowl 2024 Ads:<br>A Data-Driven Exploration
         </h2>
         """,
         unsafe_allow_html=True
