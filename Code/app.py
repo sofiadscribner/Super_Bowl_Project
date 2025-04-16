@@ -39,7 +39,6 @@ with col2:
 tab1, tab2, tab3, tab4, tab5 = st.tabs(['Introduction','YouTube Stats', 'Google Trends', 'Polling Data', 'Celebrity Influence'])
 
 with tab1:
-    st.write("Hello from tab1")
     st.markdown('### Introduction')
     st.markdown('#### Brands spent an estimated $650 million on Super Bowl ads in 2024. Was it worth it?')
     st.markdown('##### Use this app to explore the reach and impact of each ad, and determine which brands won the Big Game.')
