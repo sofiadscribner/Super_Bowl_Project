@@ -163,6 +163,13 @@ with tab4:
             'Perception of Quality': 'quality_increase'
         }
     
+    metric_defs = {
+        'Brand Awareness': 'Awareness was measured when participants were asked whether they\'d seen an ad for the given brand during the past two weeks.',
+        'Brand Familiarity': 'Familiarity is defined as how recognizable a brand is to the general population.',
+        'Brand Momentum': 'Momentum measures consumers\’ perception of whether a brand is gaining or losing market position against its competitors.',
+        'Consideration of Purchasing': 'Consideration quantifies consumers\’ likelihood to purchase a product or service.',
+        'Perception of Quality': 'Quality signals how consumers perceive the quality of a particular brand\’s product or service compared to the quality of their competitors\’ offerings.'
+    }
     # allow user to select which metric to view
 
     stat_of_interest = metric_map[input]
@@ -200,6 +207,7 @@ with tab4:
         )
 
         st.plotly_chart(fig, use_container_width=True)
+        st.write(f'{metric_defs[input]}')
         st.write(
             "<p style='font-size: 12px; color: gray;'>Data from The Harris Poll, curated <a href='https://github.com/sofiadscribner/Super_Bowl_Project' target='_blank'>here</a>.</p>",
             unsafe_allow_html=True)
