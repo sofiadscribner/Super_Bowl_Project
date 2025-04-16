@@ -83,7 +83,7 @@ with tab2:
 
 # allow user to choose how table is sorted
     
-    st.write('##### Youtube Engagement Table')
+    st.write('###### Youtube Engagement Table')
     selection = st.selectbox('Sort by:', ['Likes', 'Views', 'Like-to-View-Ratio'])
 
     if selection == 'Likes':
